@@ -4,13 +4,19 @@ import com.example.server.persistence.entities.ItemEntity;
 import com.example.server.persistence.entities.ShoppingCartEntity;
 import com.example.server.persistence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCartEntity, Long> {
-    ShoppingCartEntity GetShoppingCartByUser(UserEntity user);
-    ShoppingCartEntity GetShoppingCartByUserId(Long userId);
-    List<ItemEntity> GetItemsFromShoppingCart(ShoppingCartEntity shoppingCart);
-    List<ItemEntity> GetItemsFromUsersShoppingCart(UserEntity user);
-    List<ItemEntity> GetItemsFromUsersShoppingCartByUserId(Long userId);
+    @Query("select sc from ShoppingCartEntity sc where sc.user = ?1")
+    ShoppingCartEntity getShoppingCartByUser(UserEntity user);
+    @Query("select sc from ShoppingCartEntity sc where sc.user.id = ?1")
+    ShoppingCartEntity getShoppingCartByUserId(Long userId);
+    @Query("select sc.items from ShoppingCartEntity sc where sc = ?1")
+    List<ItemEntity> getItemsFromShoppingCart(ShoppingCartEntity shoppingCart);
+    @Query("select sc.items from ShoppingCartEntity sc where sc.user = ?1")
+    List<ItemEntity> getItemsFromUsersShoppingCart(UserEntity user);
+    @Query("select sc.items from ShoppingCartEntity sc where sc.user.id = ?1")
+    List<ItemEntity> getItemsFromUsersShoppingCartByUserId(Long userId);
 }

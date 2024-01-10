@@ -17,23 +17,23 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public List<ItemEntity> GetAllItemsFromShopById(Long shopId){
-        return itemRepository.GetAllItemsFromShopById(shopId);
+    public List<ItemEntity> getAllItemsFromShopById(Long shopId){
+        return itemRepository.getAllItemsFromShopById(shopId);
     }
 
-    public List<ItemEntity> GetAllItemsFromShop(ShopEntity shop){
-        return itemRepository.GetAllItemsFromShop(shop);
+    public List<ItemEntity> getAllItemsFromShop(ShopEntity shop){
+        return itemRepository.getAllItemsFromShop(shop);
     }
 
-    public ItemEntity GetItemById(Long itemId){
-        return itemRepository.GetItemById(itemId);
+    public ItemEntity getItemById(Long itemId){
+        return itemRepository.getItemById(itemId);
     }
 
-    public List<ItemEntity> GetItemsWithName(String name){
-        return itemRepository.GetItemsWithName(name);
+    public List<ItemEntity> getItemsWithName(String name){
+        return itemRepository.getItemsWithNameContaining(name);
     }
 
-    public List<ItemEntity> GetItemsWithDescription(String description){
-        return itemRepository.GetItemsWithDescription(description);
+    public List<ItemEntity> getItemsWithDescription(String description){
+        return itemRepository.getItemsWithDescription(description);
     }
 }

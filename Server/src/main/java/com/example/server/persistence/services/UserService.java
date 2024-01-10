@@ -5,6 +5,8 @@ import com.example.server.persistence.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     public final UserRepository userRepository;
@@ -14,11 +16,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserEntity GetUserById(Long id){
-        return userRepository.GetUserById(id);
+    public UserEntity getUserById(Long id){
+        return userRepository.getUserById(id);
     }
 
-    public UserEntity GetUserByUsername(String username){
-        return userRepository.GetUserByUsername(username);
+    public List<UserEntity> getUserByUsername(String username){
+        return userRepository.getUserByUsernameContaining(username);
     }
 }

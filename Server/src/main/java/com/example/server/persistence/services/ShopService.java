@@ -16,19 +16,19 @@ public class ShopService {
         this.shopRepository = shopRepository;
     }
 
-    public ShopEntity GetShopById(Long shopId){
-        return shopRepository.GetShopById(shopId);
+    public ShopEntity getShopById(Long shopId){
+        return shopRepository.getShopById(shopId);
     }
 
-    public List<ShopEntity> GetShopsByName(String name){
-        return shopRepository.GetShopsByName(name);
+    public List<ShopEntity> getShopsByName(String name){
+        return shopRepository.getShopsByNameContaining(name);
     }
 
-    public List<ShopEntity> GetShopsByDescription(String description){
-        return shopRepository.GetShopsByDescription(description);
+    public List<ShopEntity> getShopsByDescription(String description){
+        return shopRepository.getShopsByDescriptionContaining(description);
     }
 
-    public ShopEntity GetShopByItemId(Long itemId){
-        return shopRepository.GetShopByItemId(itemId);
+    public ShopEntity getShopByItemId(Long itemId){
+        return shopRepository.getShopByItemId(itemId);
     }
 }

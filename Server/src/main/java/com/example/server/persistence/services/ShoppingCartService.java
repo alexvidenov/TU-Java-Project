@@ -18,19 +18,19 @@ public class ShoppingCartService {
         this.shoppingCartRepository = shoppingCartRepository;
     }
 
-    public ShoppingCartEntity GetShoppingCartByUser(UserEntity user){
-        return shoppingCartRepository.GetShoppingCartByUser(user);
+    public ShoppingCartEntity getShoppingCartByUser(UserEntity user){
+        return shoppingCartRepository.getShoppingCartByUser(user);
     }
-    public ShoppingCartEntity GetShoppingCartByUserId(Long userId){
-        return shoppingCartRepository.GetShoppingCartByUserId(userId);
+    public ShoppingCartEntity getShoppingCartByUserId(Long userId){
+        return shoppingCartRepository.getShoppingCartByUserId(userId);
     }
-    public List<ItemEntity> GetItemsFromShoppingCart(ShoppingCartEntity shoppingCart){
-        return shoppingCartRepository.GetItemsFromShoppingCart(shoppingCart);
+    public List<ItemEntity> getItemsFromShoppingCart(ShoppingCartEntity shoppingCart){
+        return shoppingCartRepository.getItemsFromShoppingCart(shoppingCart);
     }
-    public List<ItemEntity> GetItemsFromUsersShoppingCart(UserEntity user){
-        return shoppingCartRepository.GetItemsFromUsersShoppingCart(user);
+    public List<ItemEntity> getItemsFromUsersShoppingCart(UserEntity user){
+        return shoppingCartRepository.getItemsFromUsersShoppingCart(user);
     }
-    public List<ItemEntity> GetItemsFromUsersShoppingCartByUserId(Long userId){
-        return shoppingCartRepository.GetItemsFromUsersShoppingCartByUserId(userId);
+    public List<ItemEntity> getItemsFromUsersShoppingCartByUserId(Long userId){
+        return shoppingCartRepository.getItemsFromUsersShoppingCartByUserId(userId);
     }
 }
