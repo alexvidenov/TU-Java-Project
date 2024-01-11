@@ -4,7 +4,6 @@ import com.example.server.persistence.entities.ItemEntity;
 import com.example.server.persistence.entities.ShopEntity;
 import com.example.server.persistence.repositories.ItemRepository;
 import com.example.server.services.iServicable;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class ItemService implements iServicable<ItemEntity> {
     }
 
     public List<ItemEntity> getItemsWithDescription(String description){
-        return itemRepository.getItemsWithDescription(description);
+        return itemRepository.getItemsWithDescriptionContaining(description);
     }
 
     @Override
@@ -52,11 +51,21 @@ public class ItemService implements iServicable<ItemEntity> {
 
     @Override
     public ItemEntity update(Long id, ItemEntity entity) {
-        return itemRepository.updateItem(id, entity);
+        if(entity.id.equals(id)){
+            itemRepository.save(entity);
+        }
+        else{
+            ItemEntity targetEntity = getById(id);
+            targetEntity.setName(entity.getName());
+            targetEntity.setDescription(entity.getDescription());
+            targetEntity.setShop(entity.getShop());
+            itemRepository.save(targetEntity);
+        }
+        return getById(id);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return itemRepository.deleteItem(id);
+        return itemRepository.deleteItem(id) == 1;
     }
 }
