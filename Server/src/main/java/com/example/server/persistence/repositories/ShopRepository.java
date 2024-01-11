@@ -15,4 +15,10 @@ public interface ShopRepository extends JpaRepository<ShopEntity, Long> {
     List<ShopEntity> getShopsByDescriptionContaining(String description);
     @Query("select i.shop from ItemEntity i where i.id = ?1")
     ShopEntity getShopByItemId(Long itemId);
+    @Query("select s from ShopEntity s")
+    List<ShopEntity> getAllShops();
+    @Query("update ShopEntity s set s = ?2 where s.id = ?1")
+    ShopEntity updateShopEntity(Long id, ShopEntity shop);
+    @Query("delete ShopEntity s where s.id = ?1")
+    Boolean deleteShop(Long id);
 }

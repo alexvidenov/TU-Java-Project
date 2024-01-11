@@ -14,9 +14,14 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
     List<ItemEntity> getAllItemsFromShop(ShopEntity shop);
     @Query("select i from ItemEntity i where i.id = ?1")
     ItemEntity getItemById(Long itemId);
+    @Query("select i from ItemEntity i")
+    List<ItemEntity> getAllItems();
     @Query("select i from ItemEntity i where i.name like %?1%")
     List<ItemEntity> getItemsWithNameContaining(String name);
     @Query("select i from ItemEntity i where i.description like %?1%")
     List<ItemEntity> getItemsWithDescription(String description);
-
+    @Query("update ItemEntity i set i = ?2 where i.id = ?1")
+    ItemEntity updateItem(Long id, ItemEntity item);
+    @Query("delete ItemEntity i where i.id = ?1")
+    Boolean deleteItem(Long id);
 }
