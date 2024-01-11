@@ -13,20 +13,22 @@ public class ItemController extends BaseController<ItemEntity, ItemDto> {
     }
 
     @Override
-    ItemEntity mapToDbRepresentation(ItemDto dto) {
+    public ItemEntity mapToDbRepresentation(ItemDto dto) {
         ItemEntity item = new ItemEntity();
         item.setName(dto.getName());
         item.setDescription(dto.getDescription());
         item.setShop(dto.getShop());
+        item.id = dto.id;
         return item;
     }
 
     @Override
-    ItemDto mapToDtoRepresentation(ItemEntity entity) {
+    public ItemDto mapToDtoRepresentation(ItemEntity entity) {
         ItemDto dto = new ItemDto();
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
         dto.setShop(entity.getShop());
+        dto.id = entity.id;
         return dto;
     }
 }
