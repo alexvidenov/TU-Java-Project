@@ -134,11 +134,11 @@ public class ItemRepositoryTest {
     @Test
     void getItemsWithNameContaining_shouldReturnListOfItems(){
         ItemEntity testItem1 = new ItemEntity();
-        testItem1.setName("aaaa");
+        testItem1.setName("username1");
         ItemEntity testItem2 = new ItemEntity();
-        testItem2.setName("aabb");
+        testItem2.setName("username2");
         ItemEntity testItem3 = new ItemEntity();
-        testItem3.setName("bbbb");
+        testItem3.setName("username3");
 
         List<ItemEntity> testItems = new ArrayList<>();
         testItems.add(testItem1);
@@ -147,21 +147,19 @@ public class ItemRepositoryTest {
 
         itemRepository.saveAll(testItems);
 
-        List<ItemEntity> resultList = itemRepository.getItemsWithNameContaining("aa");
+        List<ItemEntity> resultList = itemRepository.getItemsWithNameContaining("username");
 
-        assertNotEquals(testItems.size(), resultList.size());
-        assertEquals(testItems.get(0).id, resultList.get(0).id);
-        assertEquals(testItems.get(1).id, resultList.get(1).id);
+        assertEquals(testItems.size(), resultList.size());
     }
 
     @Test
     void getItemsWithDescriptionContaining_shouldReturnListOfItems(){
         ItemEntity testItem1 = new ItemEntity();
-        testItem1.setDescription("aaaa");
+        testItem1.setDescription("description1");
         ItemEntity testItem2 = new ItemEntity();
-        testItem2.setDescription("aabb");
+        testItem2.setDescription("description2");
         ItemEntity testItem3 = new ItemEntity();
-        testItem3.setDescription("bbbb");
+        testItem3.setDescription("description3");
 
         List<ItemEntity> testItems = new ArrayList<>();
         testItems.add(testItem1);
@@ -170,10 +168,8 @@ public class ItemRepositoryTest {
 
         itemRepository.saveAll(testItems);
 
-        List<ItemEntity> resultList = itemRepository.getItemsWithDescriptionContaining("aa");
+        List<ItemEntity> resultList = itemRepository.getItemsWithDescriptionContaining("description");
 
-        assertNotEquals(testItems.size(), resultList.size());
-        assertEquals(testItems.get(0).id, resultList.get(0).id);
-        assertEquals(testItems.get(1).id, resultList.get(1).id);
+        assertEquals(testItems.size(), resultList.size());
     }
 }

@@ -46,11 +46,20 @@ public class ShopService implements iServicable<ShopEntity> {
 
     @Override
     public ShopEntity update(Long id, ShopEntity entity) {
-        return shopRepository.updateShopEntity(id, entity);
+        if(entity.id.equals(id)){
+            shopRepository.save(entity);
+        }
+        else{
+            var targetShop = getById(id);
+            targetShop.setName(entity.getName());
+            targetShop.setDescription(entity.getDescription());
+            shopRepository.save(targetShop);
+        }
+        return getById(id);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return shopRepository.deleteShop(id);
+        return shopRepository.deleteShop(id) == 1;
     }
 }
