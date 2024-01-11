@@ -2,7 +2,7 @@ package com.example.server.controllerTests;
 
 import com.example.server.controllers.ShopController;
 import com.example.server.persistence.entities.ShopEntity;
-import com.example.server.services.iServicable;
+import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-class ShopControllerTest {
+class ShopControllerTests {
 
     @Mock
-    private iServicable<ShopEntity> shopService;
+    private BaseService<ShopEntity> shopService;
 
     @InjectMocks
     private ShopController shopController;
@@ -32,7 +32,7 @@ class ShopControllerTest {
         ShopEntity newShop = new ShopEntity();
         Mockito.when(shopService.create(Mockito.any(ShopEntity.class))).thenReturn(newShop);
 
-        ResponseEntity<ShopEntity> response = shopController.createShop(newShop);
+        ResponseEntity<ShopEntity> response = shopController.create(newShop);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -44,7 +44,7 @@ class ShopControllerTest {
         List<ShopEntity> shops = new ArrayList<>();
         Mockito.when(shopService.getAll()).thenReturn(shops);
 
-        ResponseEntity<List<ShopEntity>> response = shopController.getAllShops();
+        ResponseEntity<List<ShopEntity>> response = shopController.list();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -57,7 +57,7 @@ class ShopControllerTest {
         ShopEntity existingShop = new ShopEntity();
         Mockito.when(shopService.getById(shopId)).thenReturn(existingShop);
 
-        ResponseEntity<ShopEntity> response = shopController.getShopById(shopId);
+        ResponseEntity<ShopEntity> response = shopController.getById(shopId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -69,7 +69,7 @@ class ShopControllerTest {
         Long shopId = 1L;
         Mockito.when(shopService.getById(shopId)).thenReturn(null);
 
-        ResponseEntity<ShopEntity> response = shopController.getShopById(shopId);
+        ResponseEntity<ShopEntity> response = shopController.getById(shopId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -80,7 +80,7 @@ class ShopControllerTest {
         ShopEntity updatedShop = new ShopEntity();
         Mockito.when(shopService.update(shopId, updatedShop)).thenReturn(updatedShop);
 
-        ResponseEntity<ShopEntity> response = shopController.updateShop(shopId, updatedShop);
+        ResponseEntity<ShopEntity> response = shopController.update(shopId, updatedShop);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -93,7 +93,7 @@ class ShopControllerTest {
         ShopEntity updatedShop = new ShopEntity();
         Mockito.when(shopService.update(shopId, updatedShop)).thenReturn(null);
 
-        ResponseEntity<ShopEntity> response = shopController.updateShop(shopId, updatedShop);
+        ResponseEntity<ShopEntity> response = shopController.update(shopId, updatedShop);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -103,7 +103,7 @@ class ShopControllerTest {
         Long shopId = 1L;
         Mockito.when(shopService.delete(shopId)).thenReturn(true);
 
-        ResponseEntity<Void> response = shopController.deleteShop(shopId);
+        ResponseEntity<Void> response = shopController.delete(shopId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
@@ -113,7 +113,7 @@ class ShopControllerTest {
         Long shopId = 1L;
         Mockito.when(shopService.delete(shopId)).thenReturn(false);
 
-        ResponseEntity<Void> response = shopController.deleteShop(shopId);
+        ResponseEntity<Void> response = shopController.delete(shopId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

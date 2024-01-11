@@ -2,14 +2,14 @@ package com.example.server.persistence.services;
 
 import com.example.server.persistence.entities.ShopEntity;
 import com.example.server.persistence.repositories.ShopRepository;
-import com.example.server.services.iServicable;
+import com.example.server.services.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ShopService implements iServicable<ShopEntity> {
+public class ShopService implements BaseService<ShopEntity> {
     public final ShopRepository shopRepository;
 
     @Autowired

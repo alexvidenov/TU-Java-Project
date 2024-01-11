@@ -39,11 +39,11 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    void getItemById_shouldReturnItemIfExists(){
+    void getById_shouldReturnItemIfExists(){
         ItemEntity testItem = new ItemEntity();
         itemRepository.save(testItem);
 
-        ItemEntity resultItem = itemRepository.getItemById(testItem.id);
+        ItemEntity resultItem = itemRepository.getById(testItem.id);
 
         assertEquals(entityManager.find(ItemEntity.class, resultItem.id).id, testItem.id);
         assertEquals(entityManager.find(ItemEntity.class, resultItem.id).getName(), testItem.getName());
@@ -52,7 +52,7 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    void getAllItems_shouldReturnListOfItems(){
+    void list_shouldReturnListOfItems(){
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -64,7 +64,7 @@ public class ItemRepositoryTest {
 
         itemRepository.saveAll(testItems);
 
-        List<ItemEntity> resultList = itemRepository.getAllItems();
+        List<ItemEntity> resultList = itemRepository.list();
 
         assertEquals(testItems.get(0).id, resultList.get(0).id);
         assertEquals(testItems.get(1).id, resultList.get(1).id);
@@ -72,17 +72,17 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    void deleteItem_ShouldReturnTrueIfDeleted(){
+    void delete_ShouldReturnTrueIfDeleted(){
         ItemEntity originItem = new ItemEntity();
         itemRepository.save(originItem);
 
-        var result = itemRepository.deleteItem(originItem.id);
+        var result = itemRepository.delete(originItem.id);
 
         assertEquals(1, result);
     }
 
     @Test
-    void getAllItemsFromShop_shouldReturnListOfItems(){
+    void listFromShop_shouldReturnListOfItems(){
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -99,7 +99,7 @@ public class ItemRepositoryTest {
 
         itemRepository.saveAll(testItems);
 
-        List<ItemEntity> resultList = itemRepository.getAllItemsFromShop(testShop);
+        List<ItemEntity> resultList = itemRepository.listFromShop(testShop);
 
         assertEquals(testItems.get(0).id, resultList.get(0).id);
         assertEquals(testItems.get(1).id, resultList.get(1).id);
@@ -107,7 +107,7 @@ public class ItemRepositoryTest {
     }
 
     @Test
-    void getAllItemsFromShopById_shouldReturnListOfItems(){
+    void listFromShopById_shouldReturnListOfItems(){
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -124,7 +124,7 @@ public class ItemRepositoryTest {
 
         itemRepository.saveAll(testItems);
 
-        List<ItemEntity> resultList = itemRepository.getAllItemsFromShopById(testShop.id);
+        List<ItemEntity> resultList = itemRepository.listFromShopById(testShop.id);
 
         assertEquals(testItems.get(0).id, resultList.get(0).id);
         assertEquals(testItems.get(1).id, resultList.get(1).id);

@@ -2,7 +2,7 @@ package com.example.server.controllerTests;
 
 import com.example.server.controllers.ItemController;
 import com.example.server.persistence.entities.ItemEntity;
-import com.example.server.services.iServicable;
+import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-class ItemControllerTest {
+class ItemControllerTests {
 
     @Mock
-    private iServicable<ItemEntity> itemService;
+    private BaseService<ItemEntity> itemService;
 
     @InjectMocks
     private ItemController itemController;
@@ -32,7 +32,7 @@ class ItemControllerTest {
         ItemEntity newItem = new ItemEntity();
         Mockito.when(itemService.create(Mockito.any(ItemEntity.class))).thenReturn(newItem);
 
-        ResponseEntity<ItemEntity> response = itemController.createItem(newItem);
+        ResponseEntity<ItemEntity> response = itemController.create(newItem);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -40,11 +40,11 @@ class ItemControllerTest {
     }
 
     @Test
-    void getAllItems_shouldReturnListOfItems() {
+    void list_shouldReturnListOfItems() {
         List<ItemEntity> items = new ArrayList<>();
         Mockito.when(itemService.getAll()).thenReturn(items);
 
-        ResponseEntity<List<ItemEntity>> response = itemController.getAllItems();
+        ResponseEntity<List<ItemEntity>> response = itemController.list();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -52,12 +52,12 @@ class ItemControllerTest {
     }
 
     @Test
-    void getItemById_shouldReturnItemIfExists() {
+    void getById_shouldReturnItemIfExists() {
         Long itemId = 1L;
         ItemEntity existingItem = new ItemEntity();
         Mockito.when(itemService.getById(itemId)).thenReturn(existingItem);
 
-        ResponseEntity<ItemEntity> response = itemController.getItemById(itemId);
+        ResponseEntity<ItemEntity> response = itemController.getById(itemId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -65,22 +65,22 @@ class ItemControllerTest {
     }
 
     @Test
-    void getItemById_shouldReturnNotFoundIfItemDoesNotExist() {
+    void getById_shouldReturnNotFoundIfItemDoesNotExist() {
         Long itemId = 1L;
         Mockito.when(itemService.getById(itemId)).thenReturn(null);
 
-        ResponseEntity<ItemEntity> response = itemController.getItemById(itemId);
+        ResponseEntity<ItemEntity> response = itemController.getById(itemId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    void updateItem_shouldReturnUpdatedItemIfExists() {
+    void update_shouldReturnUpdatedItemIfExists() {
         Long itemId = 1L;
         ItemEntity updatedItem = new ItemEntity();
         Mockito.when(itemService.update(itemId, updatedItem)).thenReturn(updatedItem);
 
-        ResponseEntity<ItemEntity> response = itemController.updateItem(itemId, updatedItem);
+        ResponseEntity<ItemEntity> response = itemController.update(itemId, updatedItem);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -88,32 +88,32 @@ class ItemControllerTest {
     }
 
     @Test
-    void updateItem_shouldReturnNotFoundIfItemDoesNotExist() {
+    void update_shouldReturnNotFoundIfItemDoesNotExist() {
         Long itemId = 1L;
         ItemEntity updatedItem = new ItemEntity();
         Mockito.when(itemService.update(itemId, updatedItem)).thenReturn(null);
 
-        ResponseEntity<ItemEntity> response = itemController.updateItem(itemId, updatedItem);
+        ResponseEntity<ItemEntity> response = itemController.update(itemId, updatedItem);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    void deleteItem_shouldReturnNoContentIfItemExists() {
+    void delete_shouldReturnNoContentIfItemExists() {
         Long itemId = 1L;
         Mockito.when(itemService.delete(itemId)).thenReturn(true);
 
-        ResponseEntity<Void> response = itemController.deleteItem(itemId);
+        ResponseEntity<Void> response = itemController.delete(itemId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
-    void deleteItem_shouldReturnNotFoundIfItemDoesNotExist() {
+    void delete_shouldReturnNotFoundIfItemDoesNotExist() {
         Long itemId = 1L;
         Mockito.when(itemService.delete(itemId)).thenReturn(false);
 
-        ResponseEntity<Void> response = itemController.deleteItem(itemId);
+        ResponseEntity<Void> response = itemController.delete(itemId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
