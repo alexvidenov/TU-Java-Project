@@ -4,7 +4,7 @@ import com.example.server.persistence.entities.BaseEntity;
 
 import java.util.List;
 
-public interface iServicable<T extends BaseEntity> {
+public interface BaseService<T extends BaseEntity> {
     T create(T entity);
     List<T> getAll();
     T getById(Long id);

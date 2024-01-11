@@ -2,7 +2,7 @@ package com.example.server.controllerTests;
 
 import com.example.server.controllers.UserController;
 import com.example.server.persistence.entities.UserEntity;
-import com.example.server.services.iServicable;
+import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-class UserControllerTest {
+class UserControllerTests {
 
     @Mock
-    private iServicable<UserEntity> userService;
+    private BaseService<UserEntity> userService;
 
     @InjectMocks
     private UserController userController;
@@ -32,7 +32,7 @@ class UserControllerTest {
         UserEntity newUser = new UserEntity();
         Mockito.when(userService.create(Mockito.any(UserEntity.class))).thenReturn(newUser);
 
-        ResponseEntity<UserEntity> response = userController.createUser(newUser);
+        ResponseEntity<UserEntity> response = userController.create(newUser);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -44,7 +44,7 @@ class UserControllerTest {
         List<UserEntity> users = new ArrayList<>();
         Mockito.when(userService.getAll()).thenReturn(users);
 
-        ResponseEntity<List<UserEntity>> response = userController.getAllUsers();
+        ResponseEntity<List<UserEntity>> response = userController.list();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -57,7 +57,7 @@ class UserControllerTest {
         UserEntity existingUser = new UserEntity();
         Mockito.when(userService.getById(userId)).thenReturn(existingUser);
 
-        ResponseEntity<UserEntity> response = userController.getUserById(userId);
+        ResponseEntity<UserEntity> response = userController.getById(userId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -69,7 +69,7 @@ class UserControllerTest {
         Long userId = 1L;
         Mockito.when(userService.getById(userId)).thenReturn(null);
 
-        ResponseEntity<UserEntity> response = userController.getUserById(userId);
+        ResponseEntity<UserEntity> response = userController.getById(userId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -80,7 +80,7 @@ class UserControllerTest {
         UserEntity updatedUser = new UserEntity();
         Mockito.when(userService.update(userId, updatedUser)).thenReturn(updatedUser);
 
-        ResponseEntity<UserEntity> response = userController.updateUser(userId, updatedUser);
+        ResponseEntity<UserEntity> response = userController.update(userId, updatedUser);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -93,7 +93,7 @@ class UserControllerTest {
         UserEntity updatedUser = new UserEntity();
         Mockito.when(userService.update(userId, updatedUser)).thenReturn(null);
 
-        ResponseEntity<UserEntity> response = userController.updateUser(userId, updatedUser);
+        ResponseEntity<UserEntity> response = userController.update(userId, updatedUser);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -103,7 +103,7 @@ class UserControllerTest {
         Long userId = 1L;
         Mockito.when(userService.delete(userId)).thenReturn(true);
 
-        ResponseEntity<Void> response = userController.deleteUser(userId);
+        ResponseEntity<Void> response = userController.delete(userId);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
@@ -113,7 +113,7 @@ class UserControllerTest {
         Long userId = 1L;
         Mockito.when(userService.delete(userId)).thenReturn(false);
 
-        ResponseEntity<Void> response = userController.deleteUser(userId);
+        ResponseEntity<Void> response = userController.delete(userId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

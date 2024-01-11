@@ -3,14 +3,14 @@ package com.example.server.persistence.services;
 import com.example.server.persistence.entities.ItemEntity;
 import com.example.server.persistence.entities.ShopEntity;
 import com.example.server.persistence.repositories.ItemRepository;
-import com.example.server.services.iServicable;
+import com.example.server.services.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ItemService implements iServicable<ItemEntity> {
+public class ItemService implements BaseService<ItemEntity> {
     private final ItemRepository itemRepository;
 
     @Autowired
@@ -18,12 +18,12 @@ public class ItemService implements iServicable<ItemEntity> {
         this.itemRepository = itemRepository;
     }
 
-    public List<ItemEntity> getAllItemsFromShopById(Long shopId){
-        return itemRepository.getAllItemsFromShopById(shopId);
+    public List<ItemEntity> listFromShopById(Long shopId){
+        return itemRepository.listFromShopById(shopId);
     }
 
-    public List<ItemEntity> getAllItemsFromShop(ShopEntity shop){
-        return itemRepository.getAllItemsFromShop(shop);
+    public List<ItemEntity> listFromShop(ShopEntity shop){
+        return itemRepository.listFromShop(shop);
     }
 
     public List<ItemEntity> getItemsWithName(String name){
@@ -41,12 +41,12 @@ public class ItemService implements iServicable<ItemEntity> {
 
     @Override
     public List<ItemEntity> getAll() {
-        return itemRepository.getAllItems();
+        return itemRepository.list();
     }
 
     @Override
     public ItemEntity getById(Long id) {
-        return itemRepository.getItemById(id);
+        return itemRepository.getById(id);
     }
 
     @Override
@@ -66,6 +66,6 @@ public class ItemService implements iServicable<ItemEntity> {
 
     @Override
     public Boolean delete(Long id) {
-        return itemRepository.deleteItem(id) == 1;
+        return itemRepository.delete(id) == 1;
     }
 }
