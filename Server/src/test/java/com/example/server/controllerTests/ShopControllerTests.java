@@ -1,7 +1,7 @@
 package com.example.server.controllerTests;
 
-import com.example.server.controllers.ShopController;
-import com.example.server.persistence.entities.ShopEntity;
+import com.example.server.network.controllers.ShopController;
+import com.example.server.network.dtos.ShopDto;
 import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,17 +22,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ShopControllerTests {
 
     @Mock
-    private BaseService<ShopEntity> shopService;
+    private BaseService<ShopDto> shopService;
 
     @InjectMocks
     private ShopController shopController;
 
     @Test
     void createShop_shouldReturnCreatedShop() {
-        ShopEntity newShop = new ShopEntity();
-        Mockito.when(shopService.create(Mockito.any(ShopEntity.class))).thenReturn(newShop);
+        ShopDto newShop = new ShopDto();
+        Mockito.when(shopService.create(Mockito.any(ShopDto.class))).thenReturn(newShop);
 
-        ResponseEntity<ShopEntity> response = shopController.create(newShop);
+        ResponseEntity<ShopDto> response = shopController.create(newShop);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -41,10 +41,10 @@ class ShopControllerTests {
 
     @Test
     void getAllShops_shouldReturnListOfShops() {
-        List<ShopEntity> shops = new ArrayList<>();
+        List<ShopDto> shops = new ArrayList<>();
         Mockito.when(shopService.getAll()).thenReturn(shops);
 
-        ResponseEntity<List<ShopEntity>> response = shopController.list();
+        ResponseEntity<List<ShopDto>> response = shopController.list();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -54,10 +54,10 @@ class ShopControllerTests {
     @Test
     void getShopById_shouldReturnShopIfExists() {
         Long shopId = 1L;
-        ShopEntity existingShop = new ShopEntity();
+        ShopDto existingShop = new ShopDto();
         Mockito.when(shopService.getById(shopId)).thenReturn(existingShop);
 
-        ResponseEntity<ShopEntity> response = shopController.getById(shopId);
+        ResponseEntity<ShopDto> response = shopController.getById(shopId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -69,7 +69,7 @@ class ShopControllerTests {
         Long shopId = 1L;
         Mockito.when(shopService.getById(shopId)).thenReturn(null);
 
-        ResponseEntity<ShopEntity> response = shopController.getById(shopId);
+        ResponseEntity<ShopDto> response = shopController.getById(shopId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -77,10 +77,10 @@ class ShopControllerTests {
     @Test
     void updateShop_shouldReturnUpdatedShopIfExists() {
         Long shopId = 1L;
-        ShopEntity updatedShop = new ShopEntity();
+        ShopDto updatedShop = new ShopDto();
         Mockito.when(shopService.update(shopId, updatedShop)).thenReturn(updatedShop);
 
-        ResponseEntity<ShopEntity> response = shopController.update(shopId, updatedShop);
+        ResponseEntity<ShopDto> response = shopController.update(shopId, updatedShop);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -90,10 +90,10 @@ class ShopControllerTests {
     @Test
     void updateShop_shouldReturnNotFoundIfShopDoesNotExist() {
         Long shopId = 1L;
-        ShopEntity updatedShop = new ShopEntity();
+        ShopDto updatedShop = new ShopDto();
         Mockito.when(shopService.update(shopId, updatedShop)).thenReturn(null);
 
-        ResponseEntity<ShopEntity> response = shopController.update(shopId, updatedShop);
+        ResponseEntity<ShopDto> response = shopController.update(shopId, updatedShop);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

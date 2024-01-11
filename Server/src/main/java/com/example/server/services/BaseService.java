@@ -1,5 +1,6 @@
 package com.example.server.services;
 
+import com.example.server.network.dtos.BaseDto;
 import com.example.server.persistence.entities.BaseEntity;
 
 import java.util.List;

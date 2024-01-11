@@ -28,10 +28,18 @@ public class ShoppingCartEntity extends BaseEntity {
         this.user = user;
     }
 
-    public void addItem(ItemEntity item){
-        if(items == null){
+    public void addItem(ItemEntity item) {
+        if (items == null) {
             items = new HashSet<>();
         }
         items.add(item);
+    }
+
+    public Set<ItemEntity> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<ItemEntity> items) {
+        this.items = items;
     }
 }
