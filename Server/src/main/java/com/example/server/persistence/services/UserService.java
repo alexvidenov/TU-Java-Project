@@ -38,11 +38,20 @@ public class UserService implements iServicable<UserEntity> {
 
     @Override
     public UserEntity update(Long id, UserEntity entity) {
-        return userRepository.updateUser(id, entity);
+        if(entity.id.equals(id)){
+            userRepository.save(entity);
+        }
+        else {
+            var targetUser = getById(id);
+            targetUser.setUsername(entity.getUsername());
+            targetUser.setShoppingCard(entity.getShoppingCard());
+            userRepository.save(targetUser);
+        }
+        return getById(id);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return userRepository.deleteUser(id);
+        return userRepository.deleteUser(id) == 1;
     }
 }
