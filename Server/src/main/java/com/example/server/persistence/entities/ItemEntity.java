@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "items")
-public class UserEntity extends BaseEntity {
+public class ItemEntity extends BaseEntity {
     private String name;
     private String description;
 
