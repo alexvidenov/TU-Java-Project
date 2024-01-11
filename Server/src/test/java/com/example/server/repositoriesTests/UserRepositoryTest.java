@@ -30,7 +30,6 @@ public class UserRepositoryTest {
 
         assertEquals(entityManager.find(UserEntity.class, savedUser.id).id, testUser.id);
         assertEquals(entityManager.find(UserEntity.class, savedUser.id).getUsername(), testUser.getUsername());
-        // Add more assertions as needed
     }
 
     @Test
@@ -42,7 +41,6 @@ public class UserRepositoryTest {
 
         assertEquals(entityManager.find(UserEntity.class, resultUser.id).id, testUser.id);
         assertEquals(entityManager.find(UserEntity.class, resultUser.id).getUsername(), testUser.getUsername());
-        // Add more assertions as needed
     }
 
     @Test
@@ -58,7 +56,6 @@ public class UserRepositoryTest {
         List<UserEntity> resultList = userRepository.getAllUsers();
 
         assertEquals(testUsers.size(), resultList.size());
-        // Add more assertions as needed
     }
 
     @Test
@@ -87,7 +84,6 @@ public class UserRepositoryTest {
         List<UserEntity> resultList = userRepository.getUserByUsernameContaining("user");
 
         assertEquals(testUsers.size(), resultList.size());
-        // Add more assertions as needed
     }
 }
 
