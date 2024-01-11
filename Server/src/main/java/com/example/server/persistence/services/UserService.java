@@ -44,7 +44,7 @@ public class UserService implements iServicable<UserEntity> {
         else {
             var targetUser = getById(id);
             targetUser.setUsername(entity.getUsername());
-            targetUser.setShoppingCard(entity.getShoppingCard());
+            targetUser.setShoppingCart(entity.getShoppingCart());
             userRepository.save(targetUser);
         }
         return getById(id);

@@ -52,11 +52,19 @@ public class ShoppingCartService implements iServicable<ShoppingCartEntity> {
 
     @Override
     public ShoppingCartEntity update(Long id, ShoppingCartEntity entity) {
-        return shoppingCartRepository.updateShoppingCart(id, entity);
+        if(entity.id.equals(id)){
+            shoppingCartRepository.save(entity);
+        }
+        else{
+            var targetShoppingCart = getById(id);
+            targetShoppingCart.setUser(entity.getUser());
+            shoppingCartRepository.save(targetShoppingCart);
+        }
+        return getById(id);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return shoppingCartRepository.deleteShoppingCart(id);
+        return shoppingCartRepository.deleteShoppingCart(id) == 1;
     }
 }

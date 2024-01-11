@@ -4,6 +4,7 @@ import com.example.server.persistence.entities.ItemEntity;
 import com.example.server.persistence.entities.ShoppingCartEntity;
 import com.example.server.persistence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -23,8 +24,7 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartEntity
     List<ItemEntity> getItemsFromUsersShoppingCart(UserEntity user);
     @Query("select sc.items from ShoppingCartEntity sc where sc.user.id = ?1")
     List<ItemEntity> getItemsFromUsersShoppingCartByUserId(Long userId);
-    @Query("update ShoppingCartEntity sc set sc = ?2 where sc.id = ?1")
-    ShoppingCartEntity updateShoppingCart(Long id, ShoppingCartEntity shoppingCart);
+    @Modifying
     @Query("delete ShoppingCartEntity sc where sc.id = ?1")
-    Boolean deleteShoppingCart(Long id);
+    Integer deleteShoppingCart(Long id);
 }

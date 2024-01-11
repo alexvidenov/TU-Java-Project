@@ -7,8 +7,8 @@ import jakarta.persistence.*;
 public class UserEntity extends BaseEntity {
 
     private String username;
-    @OneToOne(mappedBy = "user")
-    private ShoppingCartEntity shoppingCard;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ShoppingCartEntity shoppingCart;
 
     public String getUsername() {
         return username;
@@ -18,11 +18,11 @@ public class UserEntity extends BaseEntity {
         this.username = username;
     }
 
-    public ShoppingCartEntity getShoppingCard() {
-        return shoppingCard;
+    public ShoppingCartEntity getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setShoppingCard(ShoppingCartEntity shoppingCard) {
-        this.shoppingCard = shoppingCard;
+    public void setShoppingCart(ShoppingCartEntity shoppingCard) {
+        this.shoppingCart = shoppingCard;
     }
 }

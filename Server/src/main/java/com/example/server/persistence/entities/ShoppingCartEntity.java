@@ -2,6 +2,7 @@ package com.example.server.persistence.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,4 +19,19 @@ public class ShoppingCartEntity extends BaseEntity {
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     Set<ItemEntity> items;
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public void addItem(ItemEntity item){
+        if(items == null){
+            items = new HashSet<>();
+        }
+        items.add(item);
+    }
 }
