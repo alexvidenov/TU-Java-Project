@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +34,19 @@ public class ShoppingCartRepositoryTest {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private PlatformTransactionManager transactionManager;
+
     @Test
-    void saveShoppingCart_shouldReturnSaveItem(){
-        ShoppingCartEntity testShoppingCart =  new ShoppingCartEntity();
+    void saveShoppingCart_shouldReturnSaveItem() {
+        ShoppingCartEntity testShoppingCart = new ShoppingCartEntity();
         ShoppingCartEntity savedShoppingCart = shoppingCartRepository.save(testShoppingCart);
 
         assertEquals(entityManager.find(ShoppingCartEntity.class, savedShoppingCart.id).id, testShoppingCart.id);
     }
 
     @Test
-    void getShoppingCartById_shouldReturnShoppingCartIfExists(){
+    void getShoppingCartById_shouldReturnShoppingCartIfExists() {
         ShoppingCartEntity testShoppingCart = new ShoppingCartEntity();
         shoppingCartRepository.save(testShoppingCart);
 
@@ -50,7 +56,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void getAllShoppingCarts_shouldReturnListOfShoppingCarts(){
+    void getAllShoppingCarts_shouldReturnListOfShoppingCarts() {
         ShoppingCartEntity testShoppingCart1 = new ShoppingCartEntity();
         ShoppingCartEntity testShoppingCart2 = new ShoppingCartEntity();
         ShoppingCartEntity testShoppingCart3 = new ShoppingCartEntity();
@@ -60,7 +66,7 @@ public class ShoppingCartRepositoryTest {
         testShoppingCarts.add(testShoppingCart2);
         testShoppingCarts.add(testShoppingCart3);
 
-        shoppingCartRepository.saveAll(testShoppingCarts);
+        testShoppingCarts = shoppingCartRepository.saveAll(testShoppingCarts);
 
         List<ShoppingCartEntity> resultList = shoppingCartRepository.getAllShoppingCarts();
 
@@ -70,7 +76,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void deleteShoppingCart_shouldReturnTrueIfDeleted(){
+    void deleteShoppingCart_shouldReturnTrueIfDeleted() {
         ShoppingCartEntity originShoppingCart = new ShoppingCartEntity();
         shoppingCartRepository.save(originShoppingCart);
 
@@ -80,7 +86,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void getShoppingCartByUser_shouldReturnShoppingCartIfExists(){
+    void getShoppingCartByUser_shouldReturnShoppingCartIfExists() {
         UserEntity testUser = new UserEntity();
         userRepository.save(testUser);
 
@@ -95,7 +101,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void getShoppingCartByUserId_shouldReturnShoppingCartIfExists(){
+    void getShoppingCartByUserId_shouldReturnShoppingCartIfExists() {
         UserEntity testUser = new UserEntity();
         userRepository.save(testUser);
 
@@ -110,7 +116,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void getItemsFromShoppingCart_shouldReturnListOfItems(){
+    void getItemsFromShoppingCart_shouldReturnListOfItems() {
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -134,7 +140,7 @@ public class ShoppingCartRepositoryTest {
     }
 
     @Test
-    void getItemsFromUsersShoppingCart_shouldReturnListOfItems(){
+    void getItemsFromUsersShoppingCart_shouldReturnListOfItems() {
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -152,19 +158,26 @@ public class ShoppingCartRepositoryTest {
         testShoppingCart.addItem(testItem3);
 
         UserEntity testUser = new UserEntity();
-        testUser.setShoppingCart(testShoppingCart);
-        userRepository.save(testUser);
-        shoppingCartRepository.save(testShoppingCart);
+
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            final UserEntity user = userRepository.save(testUser);
+            testShoppingCart.setUser(user);
+            shoppingCartRepository.save(testShoppingCart);
+
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            transactionManager.rollback(status);
+            throw e;
+        }
 
         List<ItemEntity> resultItems = shoppingCartRepository.getItemsFromUsersShoppingCart(testUser);
-
-        System.out.println("result: " + resultItems.toString());
 
         assertEquals(testItems.size(), resultItems.size());
     }
 
     @Test
-    void getItemsFromUsersShoppingCartByUserId_shouldReturnListOfItems(){
+    void getItemsFromUsersShoppingCartByUserId_shouldReturnListOfItems() {
         ItemEntity testItem1 = new ItemEntity();
         ItemEntity testItem2 = new ItemEntity();
         ItemEntity testItem3 = new ItemEntity();
@@ -174,7 +187,7 @@ public class ShoppingCartRepositoryTest {
         testItems.add(testItem2);
         testItems.add(testItem3);
 
-        itemRepository.saveAll(testItems);
+        testItems = itemRepository.saveAll(testItems);
 
         ShoppingCartEntity testShoppingCart = new ShoppingCartEntity();
         testShoppingCart.addItem(testItem1);
@@ -182,9 +195,18 @@ public class ShoppingCartRepositoryTest {
         testShoppingCart.addItem(testItem3);
 
         UserEntity testUser = new UserEntity();
-        testUser.setShoppingCart(testShoppingCart);
-        userRepository.save(testUser);
-        shoppingCartRepository.save(testShoppingCart);
+
+        TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            final UserEntity user = userRepository.save(testUser);
+            testShoppingCart.setUser(user);
+            shoppingCartRepository.save(testShoppingCart);
+
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            transactionManager.rollback(status);
+            throw e;
+        }
 
         List<ItemEntity> resultItems = shoppingCartRepository.getItemsFromUsersShoppingCartByUserId(testUser.id);
 

@@ -13,7 +13,7 @@ public class ShoppingCartEntity extends BaseEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "shopping_cart_items",
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
