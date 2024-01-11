@@ -14,18 +14,20 @@ public class ShoppingCartController extends BaseController<ShoppingCartEntity, S
     }
 
     @Override
-    ShoppingCartEntity mapToDbRepresentation(ShoppingCartDto dto) {
+    public ShoppingCartEntity mapToDbRepresentation(ShoppingCartDto dto) {
         final ShoppingCartEntity entity = new ShoppingCartEntity();
         entity.setUser(dto.getUser());
         entity.setItems(dto.getItems());
+        entity.id = dto.id;
         return entity;
     }
 
     @Override
-    ShoppingCartDto mapToDtoRepresentation(ShoppingCartEntity entity) {
+    public ShoppingCartDto mapToDtoRepresentation(ShoppingCartEntity entity) {
         final ShoppingCartDto dto = new ShoppingCartDto();
         dto.setUser(entity.getUser());
         dto.setItems(entity.getItems());
+        dto.id = entity.id;
         return dto;
     }
 }

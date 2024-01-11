@@ -2,6 +2,7 @@ package com.example.server.controllerTests;
 
 import com.example.server.network.controllers.UserController;
 import com.example.server.network.dtos.UserDto;
+import com.example.server.persistence.entities.UserEntity;
 import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,17 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class UserControllerTests {
 
     @Mock
-    private BaseService<UserDto> userService;
+    private BaseService<UserEntity> userService;
 
     @InjectMocks
     private UserController userController;
 
     @Test
     void createUser_shouldReturnCreatedUser() {
-        UserDto newUser = new UserDto();
-        Mockito.when(userService.create(Mockito.any(UserDto.class))).thenReturn(newUser);
+        UserEntity newUser = new UserEntity();
+        Mockito.when(userService.create(Mockito.any(UserEntity.class))).thenReturn(newUser);
 
-        ResponseEntity<UserDto> response = userController.create(newUser);
+        ResponseEntity<UserDto> response = userController.create(userController.mapToDtoRepresentation(newUser));
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -41,7 +42,7 @@ class UserControllerTests {
 
     @Test
     void getAllUsers_shouldReturnListOfUsers() {
-        List<UserDto> users = new ArrayList<>();
+        List<UserEntity> users = new ArrayList<>();
         Mockito.when(userService.getAll()).thenReturn(users);
 
         ResponseEntity<List<UserDto>> response = userController.list();
@@ -54,7 +55,7 @@ class UserControllerTests {
     @Test
     void getUserById_shouldReturnUserIfExists() {
         Long userId = 1L;
-        UserDto existingUser = new UserDto();
+        UserEntity existingUser = new UserEntity();
         Mockito.when(userService.getById(userId)).thenReturn(existingUser);
 
         ResponseEntity<UserDto> response = userController.getById(userId);
@@ -77,10 +78,10 @@ class UserControllerTests {
     @Test
     void updateUser_shouldReturnUpdatedUserIfExists() {
         Long userId = 1L;
-        UserDto updatedUser = new UserDto();
+        UserEntity updatedUser = new UserEntity();
         Mockito.when(userService.update(userId, updatedUser)).thenReturn(updatedUser);
 
-        ResponseEntity<UserDto> response = userController.update(userId, updatedUser);
+        ResponseEntity<UserDto> response = userController.update(userId, userController.mapToDtoRepresentation(updatedUser));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -90,10 +91,10 @@ class UserControllerTests {
     @Test
     void updateUser_shouldReturnNotFoundIfUserDoesNotExist() {
         Long userId = 1L;
-        UserDto updatedUser = new UserDto();
+        UserEntity updatedUser = new UserEntity();
         Mockito.when(userService.update(userId, updatedUser)).thenReturn(null);
 
-        ResponseEntity<UserDto> response = userController.update(userId, updatedUser);
+        ResponseEntity<UserDto> response = userController.update(userId, userController.mapToDtoRepresentation(updatedUser));
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

@@ -2,6 +2,7 @@ package com.example.server.controllerTests;
 
 import com.example.server.network.controllers.ShoppingCartController;
 import com.example.server.network.dtos.ShoppingCartDto;
+import com.example.server.persistence.entities.ShoppingCartEntity;
 import com.example.server.services.BaseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,17 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ShoppingCartControllerTests {
 
     @Mock
-    private BaseService<ShoppingCartDto> shoppingCartService;
+    private BaseService<ShoppingCartEntity> shoppingCartService;
 
     @InjectMocks
     private ShoppingCartController shoppingCartController;
 
     @Test
     void createShoppingCart_shouldReturnCreatedShoppingCart() {
-        ShoppingCartDto newShoppingCart = new ShoppingCartDto();
-        Mockito.when(shoppingCartService.create(Mockito.any(ShoppingCartDto.class))).thenReturn(newShoppingCart);
+        ShoppingCartEntity newShoppingCart = new ShoppingCartEntity();
+        Mockito.when(shoppingCartService.create(Mockito.any(ShoppingCartEntity.class))).thenReturn(newShoppingCart);
 
-        ResponseEntity<ShoppingCartDto> response = shoppingCartController.create(newShoppingCart);
+        ResponseEntity<ShoppingCartDto> response = shoppingCartController.create(shoppingCartController.mapToDtoRepresentation(newShoppingCart));
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -41,7 +42,7 @@ class ShoppingCartControllerTests {
 
     @Test
     void getAllShoppingCarts_shouldReturnListOfShoppingCarts() {
-        List<ShoppingCartDto> shoppingCarts = new ArrayList<>();
+        List<ShoppingCartEntity> shoppingCarts = new ArrayList<>();
         Mockito.when(shoppingCartService.getAll()).thenReturn(shoppingCarts);
 
         ResponseEntity<List<ShoppingCartDto>> response = shoppingCartController.list();
@@ -54,7 +55,7 @@ class ShoppingCartControllerTests {
     @Test
     void getShoppingCartById_shouldReturnShoppingCartIfExists() {
         Long cartId = 1L;
-        ShoppingCartDto existingShoppingCart = new ShoppingCartDto();
+        ShoppingCartEntity existingShoppingCart = new ShoppingCartEntity();
         Mockito.when(shoppingCartService.getById(cartId)).thenReturn(existingShoppingCart);
 
         ResponseEntity<ShoppingCartDto> response = shoppingCartController.getById(cartId);
@@ -77,10 +78,10 @@ class ShoppingCartControllerTests {
     @Test
     void updateShoppingCart_shouldReturnUpdatedShoppingCartIfExists() {
         Long cartId = 1L;
-        ShoppingCartDto updatedShoppingCart = new ShoppingCartDto();
+        ShoppingCartEntity updatedShoppingCart = new ShoppingCartEntity();
         Mockito.when(shoppingCartService.update(cartId, updatedShoppingCart)).thenReturn(updatedShoppingCart);
 
-        ResponseEntity<ShoppingCartDto> response = shoppingCartController.update(cartId, updatedShoppingCart);
+        ResponseEntity<ShoppingCartDto> response = shoppingCartController.update(cartId, shoppingCartController.mapToDtoRepresentation(updatedShoppingCart));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -90,10 +91,10 @@ class ShoppingCartControllerTests {
     @Test
     void updateShoppingCart_shouldReturnNotFoundIfShoppingCartDoesNotExist() {
         Long cartId = 1L;
-        ShoppingCartDto updatedShoppingCart = new ShoppingCartDto();
+        ShoppingCartEntity updatedShoppingCart = new ShoppingCartEntity();
         Mockito.when(shoppingCartService.update(cartId, updatedShoppingCart)).thenReturn(null);
 
-        ResponseEntity<ShoppingCartDto> response = shoppingCartController.update(cartId, updatedShoppingCart);
+        ResponseEntity<ShoppingCartDto> response = shoppingCartController.update(cartId, shoppingCartController.mapToDtoRepresentation(updatedShoppingCart));
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }

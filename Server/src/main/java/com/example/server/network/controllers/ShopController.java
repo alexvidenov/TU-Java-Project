@@ -14,18 +14,20 @@ public class ShopController extends BaseController<ShopEntity, ShopDto> {
     }
 
     @Override
-    ShopEntity mapToDbRepresentation(ShopDto dto) {
+    public ShopEntity mapToDbRepresentation(ShopDto dto) {
         final ShopEntity entity = new ShopEntity();
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
+        entity.id = dto.id;
         return entity;
     }
 
     @Override
-    ShopDto mapToDtoRepresentation(ShopEntity entity) {
+    public ShopDto mapToDtoRepresentation(ShopEntity entity) {
         final ShopDto dto = new ShopDto();
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
+        dto.id = entity.id;
         return dto;
     }
 }

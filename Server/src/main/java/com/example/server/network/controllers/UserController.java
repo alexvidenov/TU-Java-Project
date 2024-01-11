@@ -16,18 +16,20 @@ public class UserController extends BaseController<UserEntity, UserDto> {
     }
 
     @Override
-    UserEntity mapToDbRepresentation(UserDto dto) {
+    public UserEntity mapToDbRepresentation(UserDto dto) {
         final UserEntity entity = new UserEntity();
         entity.setUsername(dto.getUsername());
         entity.setShoppingCart(dto.getShoppingCart());
+        entity.id = dto.id;
         return entity;
     }
 
     @Override
-    UserDto mapToDtoRepresentation(UserEntity entity) {
+    public UserDto mapToDtoRepresentation(UserEntity entity) {
         final UserDto dto = new UserDto();
         dto.setUsername(entity.getUsername());
         dto.setShoppingCart(entity.getShoppingCart());
+        dto.id = entity.id;
         return dto;
     }
 }

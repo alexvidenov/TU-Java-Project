@@ -2,6 +2,8 @@ package com.example.server.persistence.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
@@ -24,5 +26,17 @@ public class UserEntity extends BaseEntity {
 
     public void setShoppingCart(ShoppingCartEntity shoppingCard) {
         this.shoppingCart = shoppingCard;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserEntity that)) return false;
+        return Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getShoppingCart(), that.getShoppingCart());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUsername(), getShoppingCart());
     }
 }

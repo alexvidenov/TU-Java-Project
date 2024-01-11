@@ -3,6 +3,7 @@ package com.example.server.persistence.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -41,5 +42,17 @@ public class ShoppingCartEntity extends BaseEntity {
 
     public void setItems(Set<ItemEntity> items) {
         this.items = items;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShoppingCartEntity that)) return false;
+        return Objects.equals(getUser(), that.getUser()) && Objects.equals(getItems(), that.getItems());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUser(), getItems());
     }
 }
